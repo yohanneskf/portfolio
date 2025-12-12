@@ -1,15 +1,18 @@
-// app/components/Hero.tsx
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   Github,
   Linkedin,
-  Twitter,
   Mail,
   Download,
-  ChevronDown,
+  ExternalLink,
+  Sparkles,
+  Code,
+  Globe,
+  Award,
 } from "lucide-react";
 
 export default function Hero() {
@@ -18,9 +21,8 @@ export default function Hero() {
   const roles = [
     "Full-Stack Developer",
     "4th Year CSE Student",
-    "React & Next.js Expert",
-    "Backend Specialist",
-    "Python Developer",
+    "UI/UX Enthusiast",
+    "Cloud Architect",
   ];
 
   useEffect(() => {
@@ -30,169 +32,167 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, [roles.length]);
 
-  const socialLinks = [
-    { icon: <Github size={24} />, href: "https://github.com", label: "GitHub" },
-    {
-      icon: <Linkedin size={24} />,
-      href: "https://linkedin.com",
-      label: "LinkedIn",
-    },
-    {
-      icon: <Twitter size={24} />,
-      href: "https://twitter.com",
-      label: "Twitter",
-    },
-    {
-      icon: <Mail size={24} />,
-      href: "mailto:you@example.com",
-      label: "Email",
-    },
-  ];
-
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#fafafa] dark:bg-[#050505] pt-20"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      {/* --- BACKGROUND ANIMATION --- */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 -left-4 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
+        <div className="absolute top-0 -right-4 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+      </div>
+
+      <div className="container mx-auto px-6 lg:px-16 z-10">
+        <div className="grid lg:grid-cols-12 gap-12 items-center">
+          {/* --- LEFT CONTENT (Col: 7) --- */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center lg:text-left"
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-7 text-left order-2 lg:order-1"
           >
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring" }}
-              className="w-32 h-32 mx-auto lg:mx-0 mb-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 p-1"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center space-x-2 px-4 py-2 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm mb-8"
             >
-              <div className="w-full h-full rounded-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
-                <div className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-                  FS
-                </div>
-              </div>
+              <Sparkles className="text-blue-500" size={16} />
+              <span className="text-xs font-bold uppercase tracking-widest text-gray-500">
+                Available for New Opportunities
+              </span>
             </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-              Hi, I&apos;m a{" "}
-              <motion.span
-                key={currentRole}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent"
-              >
-                {roles[currentRole]}
-              </motion.span>
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-gray-900 dark:text-white leading-[1.1] mb-6">
+              Engineering <br />
+              <span className="relative">
+                Digital
+                <svg
+                  className="absolute -bottom-2 left-0 w-full"
+                  viewBox="0 0 300 10"
+                  fill="none"
+                >
+                  <path
+                    d="M1 9C50 2 150 2 299 9"
+                    stroke="#3b82f6"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+              <br />
+              <div className="h-[1.2em] mt-2">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={currentRole}
+                    initial={{ opacity: 0, filter: "blur(10px)", y: 10 }}
+                    animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                    exit={{ opacity: 0, filter: "blur(10px)", y: -10 }}
+                    className="text-blue-600 dark:text-blue-500 text-5xl"
+                  >
+                    {roles[currentRole]}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
             </h1>
 
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl">
-              Passionate about creating exceptional digital experiences.
-              Specialized in modern web technologies with expertise in both
-              frontend and backend development.
+            <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-lg leading-relaxed font-medium">
+              I specialize in building high-performance web systems that bridge
+              the gap between design and functionality.
             </p>
 
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <motion.a
-                href="#projects"
+            <div className="flex flex-wrap gap-5">
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-shadow"
+                className="px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-xl shadow-blue-500/25 flex items-center gap-3 group"
               >
-                View Projects
-              </motion.a>
-              <motion.a
-                href="/resume.pdf"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 border-2 border-blue-500 text-blue-500 dark:text-blue-400 rounded-lg font-semibold flex items-center gap-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
-              >
-                <Download size={20} />
-                Download CV
-              </motion.a>
-            </div>
+                Launch Projects
+                <ExternalLink
+                  size={18}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
+              </motion.button>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="flex justify-center lg:justify-start gap-6 mt-12"
-            >
-              {socialLinks.map((link) => (
-                <motion.a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.2, y: -5 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="p-3 rounded-full backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-gray-800 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white transition-all"
-                  aria-label={link.label}
-                >
-                  {link.icon}
-                </motion.a>
-              ))}
-            </motion.div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-800 rounded-2xl font-bold flex items-center gap-3"
+              >
+                <Download size={18} />
+                Get Resume
+              </motion.button>
+            </div>
           </motion.div>
 
+          {/* --- RIGHT CONTENT (Col: 5) --- */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="relative"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="lg:col-span-5 relative order-1 lg:order-2"
           >
-            <div className="relative w-full max-w-lg mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl blur-3xl opacity-30 animate-pulse"></div>
-              <div className="relative backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-gray-800 rounded-3xl p-8">
-                <div className="grid grid-cols-2 gap-6">
-                  {[
-                    { name: "Python", color: "from-yellow-500 to-blue-500" },
-                    { name: "C++", color: "from-blue-500 to-blue-700" },
-                    { name: "Java", color: "from-red-500 to-orange-500" },
-                    {
-                      name: "JavaScript",
-                      color: "from-yellow-400 to-yellow-600",
-                    },
-                    { name: "React", color: "from-cyan-500 to-blue-500" },
-                    { name: "Next.js", color: "from-gray-800 to-gray-900" },
-                    { name: "Node.js", color: "from-green-500 to-green-700" },
-                    { name: "MongoDB", color: "from-green-400 to-green-600" },
-                  ].map((skill, index) => (
-                    <motion.div
-                      key={skill.name}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.05 }}
-                      className={`p-4 rounded-xl bg-gradient-to-r ${skill.color} text-white text-center font-semibold shadow-lg`}
-                    >
-                      {skill.name}
-                    </motion.div>
-                  ))}
+            <div className="relative z-10 w-full aspect-[4/5] max-w-md mx-auto">
+              {/* Glassmorphism Background for Image */}
+              <div className="absolute inset-0 bg-white/50 dark:bg-gray-900/50 backdrop-blur-2xl rounded-[3rem] border border-white/20 dark:border-gray-800 shadow-2xl" />
+
+              {/* Image Container */}
+              <div className="absolute inset-4 rounded-[2.5rem] overflow-hidden group">
+                <Image
+                  src="/profile.png" // Place your photo in /public/your-photo.jpg
+                  alt="Yohannes Kifle"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+
+              {/* --- FLOATING COMPONENTS --- */}
+              {/* Badge 1: Experience */}
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="absolute -top-6 -left-10 bg-white dark:bg-gray-900 p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 flex items-center gap-4"
+              >
+                <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
+                  <Code size={24} />
                 </div>
+                <div>
+                  <h4 className="text-sm font-black dark:text-white">31+</h4>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tight">
+                    Repos Pushed
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Badge 2: Projects */}
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, delay: 1 }}
+                className="absolute top-1/2 -right-12 bg-white dark:bg-gray-900 p-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 flex items-center gap-4"
+              >
+                <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600">
+                  <Globe size={24} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-black dark:text-white">Live</h4>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tight">
+                    Deployments
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Badge 3: Status */}
+              <div className="absolute -bottom-6 left-10 bg-white dark:bg-gray-900 px-6 py-4 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 flex items-center gap-3">
+                <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-sm font-bold dark:text-white">
+                  Active Developer
+                </span>
               </div>
             </div>
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-        >
-          <motion.a
-            href="#skills"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors"
-          >
-            <span className="text-sm mb-2">Scroll Down</span>
-            <ChevronDown size={24} />
-          </motion.a>
-        </motion.div>
       </div>
     </section>
   );

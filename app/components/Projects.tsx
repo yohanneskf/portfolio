@@ -1,17 +1,15 @@
-// app/components/Projects.tsx
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
 import {
   Github,
   ExternalLink,
-  Code,
-  Server,
-  Database,
-  Layout,
+  Code2,
   Eye,
+  Terminal,
+  Layers,
+  Sparkles,
+  ArrowRight,
 } from "lucide-react";
 
 const projects = [
@@ -20,237 +18,225 @@ const projects = [
     title: "E-Commerce Platform",
     description:
       "Full-featured online shopping platform with cart, checkout, and payment integration.",
-    technologies: ["Next.js", "React", "Node.js", "MongoDB", "Stripe"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://demo.com",
+    technologies: ["Next.js", "Node.js", "MongoDB", "Stripe"],
+    githubUrl: "#",
+    liveUrl: "#",
     category: "Full Stack",
-    color: "bg-gradient-to-r from-blue-500 to-cyan-500",
-    icon: "🛒",
+    image: "🛒",
+    gradient: "from-blue-600 to-cyan-500",
   },
   {
     id: 2,
     title: "Real-Time Chat App",
     description:
       "Instant messaging application with real-time updates and multimedia support.",
-    technologies: ["React", "Node.js", "Socket.io", "MongoDB"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://demo.com",
+    technologies: ["React", "Socket.io", "Express", "Tailwind"],
+    githubUrl: "#",
+    liveUrl: "#",
     category: "Real-Time",
-    color: "bg-gradient-to-r from-purple-500 to-pink-500",
-    icon: "💬",
+    image: "💬",
+    gradient: "from-purple-600 to-pink-500",
   },
   {
     id: 3,
     title: "Music Streaming Service",
     description:
       "Feature-rich music streaming platform with playlist creation and recommendations.",
-    technologies: ["React", "Node.js", "PostgreSQL", "AWS S3"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://demo.com",
+    technologies: ["PostgreSQL", "AWS S3", "React", "Node.js"],
+    githubUrl: "#",
+    liveUrl: "#",
     category: "Media",
-    color: "bg-gradient-to-r from-green-500 to-emerald-500",
-    icon: "🎵",
+    image: "🎵",
+    gradient: "from-emerald-600 to-teal-500",
   },
   {
     id: 4,
-    title: "Image Processing Tool",
-    description:
-      "Advanced image editing and processing application with cloud storage.",
-    technologies: ["Python", "OpenCV", "React", "Firebase"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://demo.com",
-    category: "AI/ML",
-    color: "bg-gradient-to-r from-orange-500 to-red-500",
-    icon: "🖼️",
-  },
-  {
-    id: 5,
-    title: "Learning Management System",
-    description:
-      "Comprehensive platform for online courses with progress tracking.",
-    technologies: ["Next.js", "Prisma", "PostgreSQL", "Tailwind"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://demo.com",
-    category: "Education",
-    color: "bg-gradient-to-r from-indigo-500 to-purple-500",
-    icon: "📚",
-  },
-  {
-    id: 6,
     title: "Finance Tracker",
     description:
-      "Personal finance management tool with budgeting and analytics.",
-    technologies: ["React", "Express.js", "MongoDB", "Chart.js"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://demo.com",
+      "Personal finance management tool with budgeting, analytics, and data visualization.",
+    technologies: ["Next.js", "Prisma", "Chart.js", "PostgreSQL"],
+    githubUrl: "#",
+    liveUrl: "#",
     category: "Finance",
-    color: "bg-gradient-to-r from-teal-500 to-cyan-500",
-    icon: "💰",
+    image: "💰",
+    gradient: "from-orange-600 to-red-500",
   },
 ];
 
-// Icon mapping with simpler approach
-const getTechIcon = (tech: string): JSX.Element => {
-  const techLower = tech.toLowerCase();
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2 },
+  },
+};
 
-  const iconMap: { [key: string]: JSX.Element } = {
-    react: <Layout size={16} className="text-cyan-500" />,
-    "next.js": <Code size={16} className="text-gray-800 dark:text-gray-300" />,
-    nodejs: <Server size={16} className="text-green-500" />,
-    mongodb: <Database size={16} className="text-green-400" />,
-    stripe: <span>💳</span>,
-    "socket.io": <span>⚡</span>,
-    postgresql: <Database size={16} className="text-blue-500" />,
-    python: <span>🐍</span>,
-    opencv: <span>👁️</span>,
-    firebase: <span>🔥</span>,
-    prisma: <span>⚡</span>,
-    tailwind: <span>🎨</span>,
-    "express.js": (
-      <Server size={16} className="text-gray-600 dark:text-gray-400" />
-    ),
-    "chart.js": <span>📊</span>,
-    aws: <span>☁️</span>,
-  };
-
-  // Check for exact match or partial match
-  const icon = iconMap[techLower] ||
-    iconMap[techLower.replace(".js", "")] ||
-    iconMap[techLower.replace(".", "")] || (
-      <Code size={16} className="text-gray-500" />
-    );
-
-  return icon;
+const cardVariants = {
+  hidden: { y: 50, opacity: 0, scale: 0.95 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: { type: "spring", stiffness: 100, damping: 15 },
+  },
 };
 
 export default function Projects() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, {
-    once: true,
-    amount: 0.1,
-  });
-
   return (
-    <section id="projects" className="py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-              Featured Projects
-            </span>
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            A showcase of my recent work and contributions to various projects
-          </p>
-        </motion.div>
+    <section
+      id="projects"
+      className="py-24 relative overflow-hidden bg-white dark:bg-[#050505]"
+    >
+      {/* Background Decor */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0,transparent_70%)] -z-10" />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
+      <div className="container mx-auto px-6 lg:px-16">
+        {/* Section Header */}
+        <div className="max-w-3xl mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-600 dark:text-blue-400 mb-6"
+          >
+            <Layers size={14} />
+            <span className="text-xs font-bold uppercase tracking-wider">
+              Portfolio
+            </span>
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-5xl md:text-6xl font-black tracking-tighter text-gray-900 dark:text-white mb-6"
+          >
+            Featured <span className="text-blue-600">Creations.</span>
+          </motion.h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 font-medium max-w-xl">
+            A selection of my recent works, ranging from full-stack platforms to
+            specialized AI tools.
+          </p>
+        </div>
+
+        {/* Projects Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+        >
+          {projects.map((project) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
+              variants={cardVariants}
               whileHover={{ y: -10 }}
-              className="group relative"
+              className="group relative flex flex-col rounded-[2.5rem] bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden transition-all"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
-              <div className="relative backdrop-blur-md bg-white/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden h-full group-hover:border-blue-500/50 transition-colors">
-                <div className="relative h-48 overflow-hidden">
-                  <div
-                    className={`absolute inset-0 ${project.color} flex items-center justify-center`}
-                  >
-                    <span className="text-6xl">{project.icon}</span>
-                  </div>
-                </div>
+              {/* Image / Icon Header */}
+              <div
+                className={`relative h-64 w-full bg-gradient-to-br ${project.gradient} flex items-center justify-center overflow-hidden`}
+              >
+                <motion.span
+                  initial={{ scale: 0.8 }}
+                  whileHover={{ scale: 1.2, rotate: 5 }}
+                  className="text-8xl filter drop-shadow-2xl z-10"
+                >
+                  {project.image}
+                </motion.span>
 
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold">{project.title}</h3>
-                    <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                {/* Decorative Pattern Overlay */}
+                <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm flex items-center justify-center gap-4">
+                  <motion.a
+                    href={project.githubUrl}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-4 bg-white text-black rounded-full shadow-xl"
+                  >
+                    <Github size={24} />
+                  </motion.a>
+                  <motion.a
+                    href={project.liveUrl}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-4 bg-blue-600 text-white rounded-full shadow-xl"
+                  >
+                    <ExternalLink size={24} />
+                  </motion.a>
+                </div>
+              </div>
+
+              {/* Content Section */}
+              <div className="p-8 flex flex-col flex-grow">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-2 block">
                       {project.category}
                     </span>
+                    <h3 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+                      {project.title}
+                    </h3>
                   </div>
-
-                  <p className="text-gray-600 dark:text-gray-300 mb-6">
-                    {project.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3 py-1 text-xs rounded-full backdrop-blur-md bg-white/30 dark:bg-gray-800/30 border border-gray-200/50 dark:border-gray-700/50 flex items-center gap-1"
-                      >
-                        {getTechIcon(tech)}
-                        <span>{tech}</span>
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex gap-4">
-                      <motion.a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        aria-label="GitHub Repository"
-                      >
-                        <Github size={20} />
-                      </motion.a>
-                      <motion.a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        aria-label="Live Demo"
-                      >
-                        <ExternalLink size={20} />
-                      </motion.a>
-                    </div>
-
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="px-4 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white flex items-center gap-2"
-                    >
-                      <Eye size={16} />
-                      View Details
-                    </motion.button>
-                  </div>
+                  <Sparkles
+                    size={20}
+                    className="text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                  />
                 </div>
+
+                <p className="text-gray-600 dark:text-gray-400 font-medium mb-8 flex-grow">
+                  {project.description}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1.5 rounded-xl bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-[10px] font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1.5"
+                    >
+                      <Terminal size={12} className="text-blue-500" />
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  className="flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white"
+                >
+                  View Details{" "}
+                  <ArrowRight size={16} className="text-blue-600" />
+                </motion.button>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
+        {/* Final CTA Card */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.5, delay: 1 }}
-          className="text-center mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16 p-8 rounded-[2rem] bg-gray-50 dark:bg-gray-900 border border-dashed border-gray-300 dark:border-gray-700 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left"
         >
+          <div>
+            <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+              Looking for more?
+            </h4>
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+              Explore my code architecture and documentation on GitHub.
+            </p>
+          </div>
           <motion.a
             href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-lg border-2 border-blue-500 text-blue-500 dark:text-blue-400 font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+            className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-bold flex items-center gap-3 shadow-lg"
           >
             <Github size={20} />
-            View All Projects on GitHub
+            Browse Repositories
           </motion.a>
         </motion.div>
       </div>

@@ -1,92 +1,164 @@
-// app/components/Footer.tsx
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, Heart } from "lucide-react";
+import {
+  Code2,
+  Heart,
+  ArrowUp,
+  Github,
+  Linkedin,
+  Twitter,
+  ExternalLink,
+} from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-8">
+    <footer className="relative bg-white dark:bg-[#050505] pt-24 pb-12 overflow-hidden">
+      {/* Decorative Top Border */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-800 to-transparent" />
+
+      <div className="container mx-auto px-6 lg:px-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
+          {/* Brand Column */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
             viewport={{ once: true }}
+            className="md:col-span-5"
           >
-            <div className="flex items-center space-x-2 mb-4">
-              <Code2 className="text-blue-500" size={24} />
-              <span className="text-xl font-bold text-white">Portfolio</span>
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
+                <Code2 size={22} />
+              </div>
+              <span className="text-2xl font-black tracking-tighter text-gray-900 dark:text-white uppercase">
+                Portfolio
+              </span>
             </div>
-            <p className="text-sm">
-              Building the future one line of code at a time.
+            <p className="text-gray-500 dark:text-gray-400 font-medium max-w-sm leading-relaxed mb-8">
+              Engineering high-performance digital solutions with a focus on
+              clean architecture and human-centric design.
             </p>
+            <div className="flex gap-4">
+              {[<Github />, <Linkedin />, <Twitter />].map((icon, i) => (
+                <motion.a
+                  key={i}
+                  href="#"
+                  whileHover={{ y: -5, scale: 1.1 }}
+                  className="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex items-center justify-center text-gray-500 hover:text-blue-600 transition-colors"
+                >
+                  {icon}
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
 
-          <div>
-            <h4 className="text-white font-bold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              {["Home", "About", "Skills", "Projects", "Contact"].map(
-                (item) => (
-                  <li key={item}>
-                    <a
-                      href={`#${item.toLowerCase()}`}
-                      className="hover:text-blue-400 transition-colors"
-                    >
-                      {item}
-                    </a>
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
+          {/* Links Columns */}
+          <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+            <div className="space-y-6">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+                Navigation
+              </h4>
+              <ul className="space-y-4">
+                {["Home", "About", "Skills", "Projects", "Contact"].map(
+                  (item) => (
+                    <li key={item}>
+                      <a
+                        href={`#${item.toLowerCase()}`}
+                        className="text-sm font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 transition-colors"
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="text-white font-bold mb-4">Technologies</h4>
-            <ul className="space-y-2">
-              {["React", "Next.js", "Node.js", "Python", "MongoDB"].map(
-                (tech) => (
-                  <li key={tech} className="text-sm">
+            <div className="space-y-6">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+                Tech Stack
+              </h4>
+              <ul className="space-y-4">
+                {[
+                  "React 19",
+                  "Next.js 15",
+                  "TypeScript",
+                  "Tailwind CSS",
+                  "Framer Motion",
+                ].map((tech) => (
+                  <li
+                    key={tech}
+                    className="text-sm font-semibold text-gray-400 italic"
+                  >
                     {tech}
                   </li>
-                )
-              )}
-            </ul>
-          </div>
+                ))}
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="text-white font-bold mb-4">Connect</h4>
-            <p className="text-sm mb-4">
-              Let&apos;s build something amazing together!
-            </p>
-            <a
-              href="mailto:you@example.com"
-              className="text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              you@example.com
-            </a>
+            {/* Back to Top Feature */}
+            <div className="flex flex-col items-center sm:items-end justify-center">
+              <motion.button
+                onClick={scrollToTop}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-2xl shadow-blue-500/40 group overflow-hidden relative"
+              >
+                <motion.div
+                  animate={{ y: [0, -40, 40, 0] }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="flex flex-col items-center gap-10 group-hover:block hidden"
+                >
+                  <ArrowUp size={24} />
+                  <ArrowUp size={24} />
+                </motion.div>
+                <ArrowUp size={24} className="group-hover:hidden" />
+              </motion.button>
+              <span className="text-[9px] font-black uppercase tracking-widest text-gray-400 mt-4">
+                Top
+              </span>
+            </div>
           </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          viewport={{ once: true }}
-          className="border-t border-gray-800 mt-8 pt-8 text-center"
-        >
-          <p className="flex items-center justify-center gap-2 text-sm">
-            © {currentYear} Made with{" "}
-            <Heart size={16} className="text-red-500 animate-pulse" />
-            by a passionate developer
+        {/* Bottom Bar */}
+        <div className="pt-12 border-t border-gray-100 dark:border-gray-900 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-2 text-xs font-bold text-gray-400">
+            <span>© {currentYear}</span>
+            <span className="w-1 h-1 bg-gray-300 rounded-full" />
+            <span>Adama, Ethiopia</span>
+          </div>
+
+          <p className="flex items-center gap-2 text-xs font-bold text-gray-500">
+            Designed & Developed with{" "}
+            <Heart
+              size={14}
+              className="text-red-500 fill-red-500 animate-pulse"
+            />{" "}
+            by Your Name
           </p>
-          <p className="text-xs text-gray-500 mt-2">
-            Built with Next.js 16, React 19, and Tailwind CSS
-          </p>
-        </motion.div>
+
+          <div className="flex items-center gap-6">
+            <a
+              href="#"
+              className="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition-colors"
+            >
+              Status
+            </a>
+            <a
+              href="#"
+              className="text-xs font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition-colors"
+            >
+              Privacy
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   );
