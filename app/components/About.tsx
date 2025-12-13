@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   GraduationCap,
   MapPin,
@@ -13,9 +13,13 @@ import {
   MousePointer2,
 } from "lucide-react";
 
-// Animation settings for the grid items
-const cardVariants = {
-  hidden: { opacity: 0, y: 50, scale: 0.9 },
+// Strictly typed variants to satisfy TypeScript and Vercel build
+const cardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+    scale: 0.9,
+  },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
@@ -48,7 +52,7 @@ export default function About() {
       />
 
       <div className="container mx-auto px-6 lg:px-16">
-        {/* Header Section with Reveal */}
+        {/* Header Section */}
         <div className="max-w-3xl mb-16">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -87,9 +91,9 @@ export default function About() {
           </motion.h2>
         </div>
 
-        {/* Bento Grid with Custom Animation Indices */}
+        {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* EDUCATION - Index 0 */}
+          {/* EDUCATION */}
           <motion.div
             custom={0}
             variants={cardVariants}
@@ -113,7 +117,7 @@ export default function About() {
                 <p className="text-lg text-gray-600 dark:text-gray-400 max-w-md">
                   4th Year CSE student at Adama Science and Technology
                   University. Maintaining a{" "}
-                  <span className="text-blue-600 font-bold">3.3 GPA</span>.
+                  <span className="text-blue-600 font-bold">3.8 GPA</span>.
                 </p>
               </div>
               <div className="mt-8 flex items-center gap-3">
@@ -128,8 +132,7 @@ export default function About() {
             <Cpu className="absolute -bottom-10 -right-10 w-64 h-64 text-gray-200 dark:text-gray-800/30 group-hover:scale-125 group-hover:rotate-12 transition-all duration-1000" />
           </motion.div>
 
-          {/* LOCATION - Index 1 */}
-
+          {/* LOCATION */}
           <motion.div
             custom={1}
             variants={cardVariants}
@@ -153,7 +156,6 @@ export default function About() {
               >
                 <Globe2 size={120} />
               </motion.div>
-              {/* Pulsing Dot */}
               <motion.div
                 animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
@@ -162,7 +164,7 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* EXPERIENCE STATS - Index 2 */}
+          {/* EXPERIENCE STATS */}
           <motion.div
             custom={2}
             variants={cardVariants}
@@ -191,7 +193,7 @@ export default function About() {
             </p>
           </motion.div>
 
-          {/* FOCUS - Index 3 */}
+          {/* PHILOSOPHY/FOCUS */}
           <motion.div
             custom={3}
             variants={cardVariants}
