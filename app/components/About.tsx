@@ -113,7 +113,7 @@ export default function About() {
                 <p className="text-lg text-gray-600 dark:text-gray-400 max-w-md">
                   4th Year CSE student at Adama Science and Technology
                   University. Maintaining a{" "}
-                  <span className="text-blue-600 font-bold">3.8 GPA</span>.
+                  <span className="text-blue-600 font-bold">3.3 GPA</span>.
                 </p>
               </div>
               <div className="mt-8 flex items-center gap-3">
@@ -129,6 +129,7 @@ export default function About() {
           </motion.div>
 
           {/* LOCATION - Index 1 */}
+
           <motion.div
             custom={1}
             variants={cardVariants}
