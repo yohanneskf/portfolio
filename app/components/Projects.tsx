@@ -1,11 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   Github,
   ExternalLink,
-  Code2,
-  Eye,
   Terminal,
   Layers,
   Sparkles,
@@ -63,7 +61,8 @@ const projects = [
   },
 ];
 
-const containerVariants = {
+// Strictly typed container variants
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -71,13 +70,18 @@ const containerVariants = {
   },
 };
 
-const cardVariants = {
+// Strictly typed card variants
+const cardVariants: Variants = {
   hidden: { y: 50, opacity: 0, scale: 0.95 },
   visible: {
     y: 0,
     opacity: 1,
     scale: 1,
-    transition: { type: "spring", stiffness: 100, damping: 15 },
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
   },
 };
 
@@ -87,11 +91,9 @@ export default function Projects() {
       id="projects"
       className="py-24 relative overflow-hidden bg-white dark:bg-[#050505]"
     >
-      {/* Background Decor */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0,transparent_70%)] -z-10" />
 
       <div className="container mx-auto px-6 lg:px-16">
-        {/* Section Header */}
         <div className="max-w-3xl mb-16">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -118,7 +120,6 @@ export default function Projects() {
           </p>
         </div>
 
-        {/* Projects Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -133,22 +134,16 @@ export default function Projects() {
               whileHover={{ y: -10 }}
               className="group relative flex flex-col rounded-[2.5rem] bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden transition-all"
             >
-              {/* Image / Icon Header */}
               <div
                 className={`relative h-64 w-full bg-gradient-to-br ${project.gradient} flex items-center justify-center overflow-hidden`}
               >
                 <motion.span
-                  initial={{ scale: 0.8 }}
                   whileHover={{ scale: 1.2, rotate: 5 }}
                   className="text-8xl filter drop-shadow-2xl z-10"
                 >
                   {project.image}
                 </motion.span>
-
-                {/* Decorative Pattern Overlay */}
                 <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-
-                {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm flex items-center justify-center gap-4">
                   <motion.a
                     href={project.githubUrl}
@@ -169,7 +164,6 @@ export default function Projects() {
                 </div>
               </div>
 
-              {/* Content Section */}
               <div className="p-8 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-4">
                   <div>
@@ -185,11 +179,9 @@ export default function Projects() {
                     className="text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity"
                   />
                 </div>
-
                 <p className="text-gray-600 dark:text-gray-400 font-medium mb-8 flex-grow">
                   {project.description}
                 </p>
-
                 <div className="flex flex-wrap gap-2 mb-8">
                   {project.technologies.map((tech) => (
                     <span
@@ -201,7 +193,6 @@ export default function Projects() {
                     </span>
                   ))}
                 </div>
-
                 <motion.button
                   whileHover={{ x: 5 }}
                   className="flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white"
@@ -214,7 +205,6 @@ export default function Projects() {
           ))}
         </motion.div>
 
-        {/* Final CTA Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

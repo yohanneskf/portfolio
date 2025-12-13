@@ -1,17 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   Code2,
   Server,
   Database,
   Layout,
-  Sparkles,
   Shield,
   Zap,
-  Cloud,
-  GitBranch,
-  Terminal,
   FileCode,
   Layers,
   Cpu,
@@ -45,8 +41,8 @@ const skillCategories = [
   },
 ];
 
-// Animation Variants
-const containerVariants = {
+// Strictly typed Variants for Vercel/TypeScript
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -54,7 +50,7 @@ const containerVariants = {
   },
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { y: 40, opacity: 0, filter: "blur(10px)" },
   visible: {
     y: 0,
@@ -64,7 +60,7 @@ const cardVariants = {
   },
 };
 
-const tagVariants = {
+const tagVariants: Variants = {
   hidden: { scale: 0.8, opacity: 0 },
   visible: {
     scale: 1,
@@ -120,7 +116,7 @@ export default function Skills() {
           </motion.h2>
         </div>
 
-        {/* Categories Grid with Staggered Cards */}
+        {/* Categories Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -128,7 +124,7 @@ export default function Skills() {
           viewport={{ once: true, margin: "-100px" }}
           className="grid md:grid-cols-3 gap-6 mb-6"
         >
-          {skillCategories.map((category, catIdx) => (
+          {skillCategories.map((category) => (
             <motion.div
               key={category.title}
               variants={cardVariants}
@@ -150,7 +146,7 @@ export default function Skills() {
               </p>
 
               <motion.div className="flex flex-wrap gap-2">
-                {category.skills.map((skill, i) => (
+                {category.skills.map((skill) => (
                   <motion.span
                     key={skill}
                     variants={tagVariants}
@@ -165,13 +161,12 @@ export default function Skills() {
                 ))}
               </motion.div>
 
-              {/* Animated Corner Decoration */}
               <Code2 className="absolute -bottom-6 -right-6 w-24 h-24 text-gray-200 dark:text-gray-800/20 group-hover:scale-125 transition-transform duration-700" />
             </motion.div>
           ))}
         </motion.div>
 
-        {/* The "Experience Values" Highlight Card */}
+        {/* Highlight Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -213,7 +208,6 @@ export default function Skills() {
             ))}
           </div>
 
-          {/* Animated Background Layers */}
           <motion.div
             animate={{
               rotate: 360,
