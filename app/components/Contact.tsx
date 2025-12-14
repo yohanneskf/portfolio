@@ -1,65 +1,69 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, FormEvent } from "react";
+import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
 import {
   Mail,
-  Phone,
-  MapPin,
   Send,
   CheckCircle,
-  MessageSquare,
   User,
   FileText,
   Sparkles,
   ArrowUpRight,
   Linkedin,
   Github,
-  Twitter,
+  MessageSquare,
+  AlertCircle,
 } from "lucide-react";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // EmailJS Configuration - UPDATE THESE VALUES AFTER SETUP
+  const EMAILJS_SERVICE_ID = "service_tqenp6c"; // Change to your service ID
+  const EMAILJS_TEMPLATE_ID = "template_s0ow9d7"; // Change to your template ID
+  const EMAILJS_PUBLIC_KEY = "Rzw3vAdGQ1xBClBkW"; // Change to your public key
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
-    // In a real application, you would send this to your backend
-    // For now, we'll simulate an API call and open email client
+    if (!formRef.current) {
+      setError("Form not found. Please refresh the page.");
+      setIsSubmitting(false);
+      return;
+    }
 
-    // Open user's email client with pre-filled data
-    const mailtoLink = `mailto:yohanneskifle540@gmail.com?subject=${encodeURIComponent(
-      formData.subject || "Portfolio Inquiry"
-    )}&body=${encodeURIComponent(
-      `Hello Yohannes,\n\n${formData.message}\n\nFrom: ${formData.name}\nEmail: ${formData.email}`
-    )}`;
+    try {
+      const result = await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        EMAILJS_PUBLIC_KEY
+      );
 
-    window.open(mailtoLink, "_blank");
-
-    // Simulate processing time
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    setTimeout(() => setIsSubmitted(false), 5000);
+      if (result.status === 200) {
+        setIsSubmitted(true);
+        formRef.current.reset();
+        setTimeout(() => setIsSubmitted(false), 5000);
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (err) {
+      console.error("EmailJS Error:", err);
+      setError(
+        "Failed to send message. Please email me directly at yohanneskifle540@gmail.com"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Contact methods with actual links
   const contactMethods = [
     {
       icon: <Mail size={20} />,
@@ -71,23 +75,16 @@ export default function Contact() {
     {
       icon: <Linkedin size={20} />,
       label: "LinkedIn",
-      value: "in/yohannes-kifle",
-      link: "https://linkedin.com/in/yohannes-kifle", // Update with your actual LinkedIn
+      value: "yohannes kifle",
+      link: "https://et.linkedin.com/in/yohannes-kifle-63415236a",
       description: "Professional network",
     },
     {
       icon: <Github size={20} />,
       label: "GitHub",
-      value: "@YohannesKifle",
-      link: "https://github.com/YohannesKifle", // Update with your GitHub
+      value: "YohannesKifle",
+      link: "https://github.com/Yohanneskf",
       description: "Code repositories",
-    },
-    {
-      icon: <Twitter size={20} />,
-      label: "Twitter / X",
-      value: "@yourusername",
-      link: "https://twitter.com/yourusername", // Update if you have
-      description: "Social updates",
     },
   ];
 
@@ -96,13 +93,13 @@ export default function Contact() {
       id="contact"
       className="py-24 relative overflow-hidden bg-white dark:bg-[#050505]"
     >
-      {/* Background Aesthetic Elements */}
+      {/* Background Elements */}
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-600/5 blur-[120px] rounded-full -z-10" />
       <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-blue-600/5 blur-[100px] rounded-full -z-10" />
 
       <div className="container mx-auto px-6 lg:px-16">
         <div className="grid lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column: Context & Info */}
+          {/* Left Column */}
           <div className="lg:col-span-5 space-y-8">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -116,12 +113,11 @@ export default function Contact() {
                 </span>
               </div>
               <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-gray-900 dark:text-white leading-tight mb-6">
-                Ready to start your next{" "}
-                <span className="text-blue-600">big thing?</span>
+                Get in <span className="text-blue-600">touch</span>
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
-                Currently available for freelance projects and full-time
-                opportunities. I usually respond within{" "}
+                Have a project in mind? Let's work together. Send me a message
+                and I'll respond within{" "}
                 <span className="text-blue-600 dark:text-blue-400 font-bold">
                   24 hours
                 </span>
@@ -129,7 +125,7 @@ export default function Contact() {
               </p>
             </motion.div>
 
-            {/* Quick Contact Cards */}
+            {/* Contact Cards */}
             <div className="grid gap-4">
               {contactMethods.map((item, i) => (
                 <motion.a
@@ -144,17 +140,7 @@ export default function Contact() {
                   className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex items-center justify-between group cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
                 >
                   <div className="flex items-center gap-4">
-                    <div
-                      className={`p-3 rounded-xl bg-white dark:bg-black shadow-sm ${
-                        item.label === "Email"
-                          ? "text-blue-600"
-                          : item.label === "LinkedIn"
-                          ? "text-blue-700"
-                          : item.label === "GitHub"
-                          ? "text-gray-900 dark:text-white"
-                          : "text-sky-500"
-                      }`}
-                    >
+                    <div className="p-3 rounded-xl bg-white dark:bg-black shadow-sm text-blue-600">
                       {item.icon}
                     </div>
                     <div>
@@ -176,20 +162,9 @@ export default function Contact() {
                 </motion.a>
               ))}
             </div>
-
-            {/* Direct Email Button */}
-            <motion.a
-              href="mailto:yohanneskifle540@gmail.com"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold shadow-lg hover:shadow-blue-500/25 transition-shadow"
-            >
-              <Mail size={18} />
-              Email Me Directly
-            </motion.a>
           </div>
 
-          {/* Right Column: The Form */}
+          {/* Right Column - Form */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -202,44 +177,75 @@ export default function Contact() {
                   Send a Message
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Fill out the form below or email me directly at{" "}
-                  <a
-                    href="mailto:yohanneskifle540@gmail.com"
-                    className="text-blue-600 dark:text-blue-400 font-bold hover:underline"
-                  >
-                    yohanneskifle540@gmail.com
-                  </a>
+                  Fill out the form below. No redirects needed.
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                {/* Status Messages */}
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
+                  >
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="text-red-600 mt-0.5" size={18} />
+                      <div>
+                        <p className="text-red-700 dark:text-red-300 font-medium">
+                          {error}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {isSubmitted && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
+                  >
+                    <div className="flex items-center gap-3">
+                      <CheckCircle className="text-green-600" size={24} />
+                      <div>
+                        <h4 className="font-bold text-green-800 dark:text-green-300">
+                          Message Sent! 🎉
+                        </h4>
+                        <p className="text-sm text-green-700 dark:text-green-400">
+                          Thanks for reaching out. I'll respond soon.
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Form Fields */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1 flex items-center gap-2">
-                      <User size={12} /> Your Name
+                      <User size={12} /> Name
                     </label>
                     <input
                       type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
+                      name="from_name"
                       required
-                      placeholder="John Doe"
-                      className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:text-white font-medium"
+                      disabled={isSubmitting}
+                      placeholder="Your name"
+                      className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1 flex items-center gap-2">
-                      <Mail size={12} /> Email Address
+                      <Mail size={12} /> Email
                     </label>
                     <input
                       type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
+                      name="from_email"
                       required
-                      placeholder="john@example.com"
-                      className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:text-white font-medium"
+                      disabled={isSubmitting}
+                      placeholder="your@email.com"
+                      className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -251,11 +257,10 @@ export default function Contact() {
                   <input
                     type="text"
                     name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
                     required
-                    placeholder="Project Inquiry / Job Opportunity"
-                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:text-white font-medium"
+                    disabled={isSubmitting}
+                    placeholder="Project Inquiry / Collaboration"
+                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
 
@@ -265,23 +270,28 @@ export default function Contact() {
                   </label>
                   <textarea
                     name="message"
-                    value={formData.message}
-                    onChange={handleChange}
                     required
+                    disabled={isSubmitting}
                     rows={5}
-                    placeholder="Tell me about your project, timeline, and budget..."
-                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:text-white font-medium resize-none"
+                    placeholder="Tell me about your project..."
+                    className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-black border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:text-white font-medium resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
 
                 <motion.button
                   type="submit"
-                  disabled={isSubmitting}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full py-5 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all shadow-xl shadow-blue-500/20 ${
+                  disabled={isSubmitting || isSubmitted}
+                  whileHover={
+                    !isSubmitting && !isSubmitted ? { scale: 1.01 } : {}
+                  }
+                  whileTap={
+                    !isSubmitting && !isSubmitted ? { scale: 0.98 } : {}
+                  }
+                  className={`w-full py-5 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 transition-all shadow-xl ${
                     isSubmitted
-                      ? "bg-green-500 text-white"
+                      ? "bg-green-500 text-white cursor-default"
+                      : isSubmitting
+                      ? "bg-blue-500/50 text-white cursor-wait"
                       : "bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600"
                   }`}
                 >
@@ -293,57 +303,37 @@ export default function Contact() {
                   ) : isSubmitted ? (
                     <>
                       <CheckCircle size={20} />
-                      Sent Successfully!
+                      Message Sent!
                     </>
                   ) : (
                     <>
                       <Send size={18} />
-                      Launch Message
+                      Send Message
                     </>
                   )}
                 </motion.button>
-
-                {isSubmitted && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-4 rounded-xl bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 text-sm"
-                  >
-                    ✓ Message sent! I've opened your email client. Please send
-                    the email to complete the process.
-                  </motion.div>
-                )}
               </form>
             </div>
           </motion.div>
         </div>
 
-        {/* Footer Credits */}
+        {/* Footer */}
         <div className="mt-24 pt-8 border-t border-gray-100 dark:border-gray-900 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-sm text-gray-400 font-medium italic">
             Built with ❤️ in Adama, Ethiopia.
           </p>
           <div className="flex gap-6 text-gray-400 font-bold uppercase text-[10px] tracking-widest">
-            <a
-              href="https://linkedin.com/in/yohannes-kifle"
-              target="_blank"
-              className="hover:text-blue-600 transition-colors"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com/YohannesKifle"
-              target="_blank"
-              className="hover:text-blue-600 transition-colors"
-            >
-              GitHub
-            </a>
-            <a
-              href="mailto:yohanneskifle540@gmail.com"
-              className="hover:text-blue-600 transition-colors"
-            >
-              Email
-            </a>
+            {contactMethods.map((method) => (
+              <a
+                key={method.label}
+                href={method.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-600 transition-colors"
+              >
+                {method.label}
+              </a>
+            ))}
           </div>
         </div>
       </div>

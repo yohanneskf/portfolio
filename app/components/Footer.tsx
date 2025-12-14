@@ -44,18 +44,6 @@ export default function Footer() {
               Engineering high-performance digital solutions with a focus on
               clean architecture and human-centric design.
             </p>
-            <div className="flex gap-4">
-              {[<Github />, <Linkedin />, <Twitter />].map((icon, i) => (
-                <motion.a
-                  key={i}
-                  href="#"
-                  whileHover={{ y: -5, scale: 1.1 }}
-                  className="w-10 h-10 rounded-full bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex items-center justify-center text-gray-500 hover:text-blue-600 transition-colors"
-                >
-                  {icon}
-                </motion.a>
-              ))}
-            </div>
           </motion.div>
 
           {/* Links Columns */}
