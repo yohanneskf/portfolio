@@ -120,7 +120,7 @@ export default function About() {
                     {" "}
                     Computer Science and Engineering
                   </span>
-                  . student at Adama Science and Technology University.
+                  student at Adama Science and Technology University.
                 </p>
               </div>
               <div className="mt-8 flex items-center gap-3">
