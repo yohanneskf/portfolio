@@ -32,10 +32,32 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, [roles.length]);
 
+  // Function to handle CV download
+  const handleDownloadCV = () => {
+    // Option 1: Direct link to PDF file in public folder
+    const cvPath = "/Yohannes-Kifle-Tekebay-FlowCV-Resume-20251213 (2).pdf"; // Change this to your actual CV file name
+
+    // Create an anchor element
+    const link = document.createElement("a");
+    link.href = cvPath;
+    link.download = "Yohannes_Kifle_CV.pdf"; // Name of the downloaded file
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Alternative: If you want to open in new tab instead of download
+  const handleViewCV = () => {
+    window.open(
+      "/Yohannes-Kifle-Tekebay-FlowCV-Resume-20251213 (2).pdf",
+      "_blank"
+    );
+  };
+
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#fafafa] dark:bg-[#050505] pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#fafafa] dark:bg-[#050505] pt-20 pb-6"
     >
       {/* --- BACKGROUND ANIMATION --- */}
       <div className="absolute inset-0 z-0">
@@ -103,25 +125,15 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-5">
+              {/* Download CV Button */}
               <motion.button
+                onClick={handleDownloadCV}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-xl shadow-blue-500/25 flex items-center gap-3 group"
-              >
-                Launch Projects
-                <ExternalLink
-                  size={18}
-                  className="group-hover:translate-x-1 transition-transform"
-                />
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-800 rounded-2xl font-bold flex items-center gap-3"
+                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-2xl font-bold flex items-center gap-3 shadow-lg hover:shadow-blue-500/25 transition-shadow"
               >
                 <Download size={18} />
-                Get Resume
+                Download CV
               </motion.button>
             </div>
           </motion.div>
@@ -140,10 +152,11 @@ export default function Hero() {
               {/* Image Container */}
               <div className="absolute inset-4 rounded-[2.5rem] overflow-hidden group">
                 <Image
-                  src="/profile.png" // Place your photo in /public/your-photo.jpg
+                  src="/profile.png" // Place your photo in /public/profile.png
                   alt="Yohannes Kifle"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>

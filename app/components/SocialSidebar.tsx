@@ -21,10 +21,26 @@ export default function SocialSidebar() {
   const [isMobile, setIsMobile] = useState(false);
 
   const socials = [
-    { name: "GitHub", icon: <Github size={20} />, href: "" },
-    { name: "LinkedIn", icon: <Linkedin size={20} />, href: "" },
-    { name: "Telegram", icon: <Send size={20} />, href: "" },
-    { name: "Email", icon: <Mail size={20} />, href: "mailto:your@email.com" },
+    {
+      name: "GitHub",
+      icon: <Github size={20} />,
+      href: "https://github.com/yohanneskf",
+    },
+    {
+      name: "LinkedIn",
+      icon: <Linkedin size={20} />,
+      href: "https://et.linkedin.com/in/yohannes-kifle-63415236a",
+    },
+    {
+      name: "Telegram",
+      icon: <Send size={20} />,
+      href: "https://t.me/joh5k",
+    },
+    {
+      name: "Email",
+      icon: <Mail size={20} />,
+      href: "mailto:yohanneskifle540@gmail.com",
+    },
   ];
 
   // Check if mobile on mount and resize

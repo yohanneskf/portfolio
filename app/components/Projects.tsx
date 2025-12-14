@@ -220,7 +220,7 @@ export default function Projects() {
             </p>
           </div>
           <motion.a
-            href="https://github.com"
+            href="https://github.com/yohanneskf?tab=repositories"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-bold flex items-center gap-3 shadow-lg"
