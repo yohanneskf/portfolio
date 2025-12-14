@@ -115,9 +115,12 @@ export default function About() {
                   Education
                 </h3>
                 <p className="text-lg text-gray-600 dark:text-gray-400 max-w-md">
-                  4th Year CSE student at Adama Science and Technology
-                  University. Maintaining a{" "}
-                  <span className="text-blue-600 font-bold">3.8 GPA</span>.
+                  4th Year{" "}
+                  <span className="text-blue-600 font-bold">
+                    {" "}
+                    Computer Science and Engineering
+                  </span>
+                  . student at Adama Science and Technology University.
                 </p>
               </div>
               <div className="mt-8 flex items-center gap-3">

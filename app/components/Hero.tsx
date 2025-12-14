@@ -111,7 +111,7 @@ export default function Hero() {
                     initial={{ opacity: 0, filter: "blur(10px)", y: 10 }}
                     animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                     exit={{ opacity: 0, filter: "blur(10px)", y: -10 }}
-                    className="text-blue-600 dark:text-blue-500 text-5xl"
+                    className="text-blue-600 dark:text-blue-500 text-3xl md:text-5xl space-x-0.5"
                   >
                     {roles[currentRole]}
                   </motion.span>
