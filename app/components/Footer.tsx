@@ -129,7 +129,7 @@ export default function Footer() {
               size={14}
               className="text-red-500 fill-red-500 animate-pulse"
             />{" "}
-            by Your Name
+            by Yohannes kifle
           </p>
 
           <div className="flex items-center gap-6">
